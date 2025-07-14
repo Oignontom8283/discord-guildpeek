@@ -1,0 +1,62 @@
+{
+  "name": "discord-guildpeek",
+  "version": "1.0.0",
+  "description": "Get a public preview of a Discord server from its invite code, without authentication.",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    "import": "./dist/esm/index.js",
+    "require": "./dist/cjs/index.js",
+    "default": "./dist/cjs/index.js"
+  },
+  "scripts": {
+    "test": "ts-node test.ts",
+    "build:esm": "tsc --project tsconfig.esm.json",
+    "build:cjs": "tsc --project tsconfig.json",
+    "build:bundle": "vite build",
+    "build": "npm run build:esm && npm run build:cjs && npm run build:bundle"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Oignontom8283/discord-guildpeek.git"
+  },
+  "keywords": [
+    "discord",
+    "discord-api",
+    "invite",
+    "guild",
+    "server",
+    "discord-server",
+    "discord-invite",
+    "public-info",
+    "discord-info",
+    "discord-metadata",
+    "discord-preview",
+    "guild-info",
+    "discord-members",
+    "discord-bot",
+    "discord-utils",
+    "member-count",
+    "presence-count",
+    "discord-tools",
+    "no-auth",
+    "public-data"
+  ],
+  "author": "Oignontom8283",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Oignontom8283/discord-guildpeek/issues"
+  },
+  "homepage": "https://github.com/Oignontom8283/discord-guildpeek#readme",
+  "devDependencies": {
+    "@types/node": "^24.0.13",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.4"
+  },
+  "dependencies": {
+    "zod": "^4.0.5"
+  }
+}
