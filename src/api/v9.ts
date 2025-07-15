@@ -56,6 +56,9 @@ export interface DiscordInviteStatusV9 {
     guild: {
         id: string;
         name: string;
+        description: string | null;
+        member: number;
+        online: number;
 
         icon: `https://cdn.discordapp.com/icons/${string}/${string}.png` | null;
         icon64: `https://cdn.discordapp.com/icons/${string}/${string}.png?size=64` | null;
@@ -63,9 +66,6 @@ export interface DiscordInviteStatusV9 {
         banner: `https://cdn.discordapp.com/splashes/${string}/${string}.png` | null;
         banner1024: `https://cdn.discordapp.com/splashes/${string}/${string}.png?size=1024` | null;
 
-        member: number;
-        online: number;
-        description: string | null;
         features: string[];
         verificationLevel: number;
         vanityUrl: string | null;
