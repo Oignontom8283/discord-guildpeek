@@ -18,7 +18,8 @@
     "build:esm": "tsc --project tsconfig.esm.json",
     "build:cjs": "tsc --project tsconfig.json",
     "build:bundle": "vite build",
-    "build": "npm run build:esm && npm run build:cjs && npm run build:bundle"
+    "build": "npm run build:esm && npm run build:cjs && npm run build:bundle",
+    "pub": "npm run build && npm publish --access public"
   },
   "repository": {
     "type": "git",
