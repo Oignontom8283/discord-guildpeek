@@ -10,6 +10,9 @@
     "require": "./dist/cjs/index.js",
     "default": "./dist/cjs/index.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "ts-node test.ts",
     "build:esm": "tsc --project tsconfig.esm.json",
