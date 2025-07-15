@@ -101,7 +101,7 @@ export interface DiscordInviteStatusV9 {
         flags: number;
         publicFlags: number;
         accentColor: number | null;
-        bannerColor: `#${string}` | null;
+        bannerColor: string | null;
     } | null,
     
 }
@@ -164,7 +164,7 @@ function convertInviteStatusV9(data: z.infer<typeof DiscordInviteSchemaV9>): Dis
             flags: data.inviter.flags,
             publicFlags: data.inviter.public_flags,
             accentColor: data.inviter.accent_color || null,
-            bannerColor: data.inviter.banner_color ? `#${data.inviter.banner_color}` : null
+            bannerColor: data.inviter.banner_color ? `${data.inviter.banner_color}` : null
         } : null,
 
     }
