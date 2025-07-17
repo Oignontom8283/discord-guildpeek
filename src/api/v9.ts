@@ -64,6 +64,12 @@ enum AllowedExtensions {
 }
 
 /**
+ * Represents a string literal type that matches any value of the {@link AllowedExtensions} type.
+ * Useful for enforcing that only allowed file extensions are used as string values.
+ */
+type AllowedExtensionsValue = `${AllowedExtensions}`;
+
+/**
  * Represents the types of resources available in the Discord API.
  */
 enum RessourceType {
@@ -91,7 +97,7 @@ type ImageUrlOptions = {
      * 
      * @defaultValue `png`
      */
-    extension?: AllowedExtensions;
+    extension?: AllowedExtensionsValue;
 }
 
 /**
