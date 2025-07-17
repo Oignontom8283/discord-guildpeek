@@ -59,6 +59,7 @@ getStatus('INVITE_ID').then(info => {
 ## 🧰 Features
 
 * 🔍 `getStatus(code: string)` — Fetches public metadata of a Discord server using an invite code.
+* 🌐 Function `extractDiscordInviteId()` for extracting the invite ID from a Discord invite link.
 * 📎 No token or authentication required.
 * 📦 Supports ESM, CommonJS, and UMD (browser) builds.
 
@@ -75,6 +76,10 @@ getStatus('INVITE_ID').then(info => {
 * Fully typed with TypeScript (`strict: true`)
 * Response validation via [Zod](https://github.com/colinhacks/zod)
 * Bundled with [Vite](https://vitejs.dev/) for browser builds
+
+## Github
+
+Repository: [https://github.com/Oignontom8283/discord-guildpeek](https://github.com/Oignontom8283/discord-guildpeek)
 
 ## 📜 License
 
