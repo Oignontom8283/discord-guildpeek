@@ -47,6 +47,77 @@ export async function getInviteStatusV9(inviteId: string): Promise<DiscordInvite
     return convertInviteStatusV9(inviteData);
 }
 
+
+/**
+ * Enum representing the allowed image file extensions for Discord assets.
+ * 
+ * These extensions are commonly supported for user avatars, guild icons, and other media.
+ * 
+ * @remarks The values correspond to the file formats accepted by Discord's API.
+ */
+enum AllowedExtensions {
+    WEBP = "webp",
+    PNG = "png",
+    JPG = "jpg",
+    JPEG = "jpeg",
+    GIF = "gif"
+}
+
+/**
+ * Represents the types of resources available in the Discord API.
+ */
+enum RessourceType {
+    AVATARS = 'avatars',
+    BANNERS = 'banners',
+    ICONS = 'icons',
+    SPLASHES = 'splashes'
+}
+
+/**
+ * Options for generating an image URL.
+ *
+ * @property `size` - The size specified in the image URL.
+ * @property `extension` - The extension to use for the image URL. Defaults to `png`.
+ */
+type ImageUrlOptions = {
+
+    /**
+     * The size specified in the image URL
+     */
+    size?: number;
+
+    /**
+     * The extension to use for the image URL
+     * 
+     * @defaultValue `png`
+     */
+    extension?: AllowedExtensions;
+}
+
+/**
+ * Represents a function that generates an image URL based on the provided options.
+ *
+ * @param args - The options used to construct the image URL.
+ * @returns The generated image URL as a string.
+ */
+type ImageGetterFunction = (args: ImageUrlOptions) => string;
+
+/**
+ * Returns a function that generates a Discord CDN image URL for a given media type, user ID, and resource ID.
+ *
+ * @param mediaType - The type of media resource (e.g., "avatars", "banners").
+ * @param userId - The ID of the user associated with the resource.
+ * @param ressourceId - The ID of the specific resource (e.g., avatar hash).
+ * @returns A function that takes image options (size and extension) and returns the corresponding CDN URL.
+ */
+function ImageGetter(mediaType:RessourceType, userId:string, ressourceId:string): ImageGetterFunction {
+    return (args) => {
+        const size = args.size ? `?size=${args.size}` : "";
+        const extension  = args.extension ? args.extension : AllowedExtensions.PNG; 
+        return `https://cdn.discordapp.com/${mediaType}/${userId}/${ressourceId}.${extension}${size}`;
+    };
+}
+
 /**
  * Represents the status of a Discord invite in API version 9.
  */
@@ -60,11 +131,8 @@ export interface DiscordInviteStatusV9 {
         member: number;
         online: number;
 
-        icon: `https://cdn.discordapp.com/icons/${string}/${string}.png` | null;
-        icon64: `https://cdn.discordapp.com/icons/${string}/${string}.png?size=64` | null;
-
-        banner: `https://cdn.discordapp.com/splashes/${string}/${string}.png` | null;
-        banner1024: `https://cdn.discordapp.com/splashes/${string}/${string}.png?size=1024` | null;
+        icon: ImageGetterFunction;
+        banner: ImageGetterFunction | null;
 
         features: string[];
         verificationLevel: number;
@@ -93,9 +161,8 @@ export interface DiscordInviteStatusV9 {
         username: string;
         globalName: string;
 
-        avatar: `https://cdn.discordapp.com/avatars/${string}/${string}.png`;
-        avatar64: `https://cdn.discordapp.com/avatars/${string}/${string}.png?size=64`;
-        avatar128: `https://cdn.discordapp.com/avatars/${string}/${string}.png?size=128`;
+        avatar: ImageGetterFunction;
+        banner: ImageGetterFunction | null;
 
         discriminator: string;
         flags: number;
@@ -124,10 +191,11 @@ function convertInviteStatusV9(data: z.infer<typeof DiscordInviteSchemaV9>): Dis
         guild: {
             id: data.guild.id,
             name: data.guild.name,
-            icon: data.guild.icon ? `https://cdn.discordapp.com/icons/${data.guild.id}/${data.guild.icon}.png` : null,
-            icon64: data.guild.icon ? `https://cdn.discordapp.com/icons/${data.guild.id}/${data.guild.icon}.png?size=64` : null,
-            banner: data.guild.splash ? `https://cdn.discordapp.com/splashes/${data.guild.id}/${data.guild.splash}.png` : null,
-            banner1024: data.guild.splash ? `https://cdn.discordapp.com/splashes/${data.guild.id}/${data.guild.splash}.png?size=1024` : null,
+
+            icon: ImageGetter(RessourceType.ICONS, data.guild.id, data.guild.icon),
+
+            banner: data.guild.splash ? ImageGetter(RessourceType.SPLASHES, data.guild.id, data.guild.splash) : null,
+
             member: data.profile.member_count,
             online: data.profile.online_count,
             description: data.guild.description,
@@ -157,9 +225,10 @@ function convertInviteStatusV9(data: z.infer<typeof DiscordInviteSchemaV9>): Dis
             id: data.inviter.id,
             username: data.inviter.username,
             globalName: data.inviter.global_name || "",
-            avatar: `https://cdn.discordapp.com/avatars/${data.inviter.id}/${data.inviter.avatar}.png`,
-            avatar64: `https://cdn.discordapp.com/avatars/${data.inviter.id}/${data.inviter.avatar}.png?size=64`,
-            avatar128: `https://cdn.discordapp.com/avatars/${data.inviter.id}/${data.inviter.avatar}.png?size=128`,
+
+            avatar: ImageGetter(RessourceType.AVATARS, data.inviter.id, data.inviter.avatar),
+            banner: data.inviter.banner ? ImageGetter(RessourceType.BANNERS, data.inviter.id, data.inviter.banner) : null,
+
             discriminator: data.inviter.discriminator,
             flags: data.inviter.flags,
             publicFlags: data.inviter.public_flags,

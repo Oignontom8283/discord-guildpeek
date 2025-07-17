@@ -16,7 +16,7 @@ const AvatarDecorationSchema = z.object({
 const UserSchema = z.object({
     id: z.string(),
     username: z.string(),
-    avatar: z.string().nullable(),
+    avatar: z.string(),
     discriminator: z.string(),
     public_flags: z.number(),
     flags: z.number(),
@@ -37,7 +37,7 @@ const GuildSchema = z.object({
     splash: z.string().nullable(),
     banner: z.string().nullable(),
     description: z.string().nullable(),
-    icon: z.string().nullable(),
+    icon: z.string(),
     features: z.array(z.string()),
     verification_level: z.number(),
     vanity_url_code: z.string().nullable(),
@@ -79,7 +79,7 @@ const ProfileSchema = z.object({
 export const DiscordInviteSchemaV9 = z.object({
     type: z.number(),
     code: z.string(),
-    inviter: UserSchema,
+    inviter: UserSchema.optional(),
     expires_at: z.union([z.string(), z.null()]),
     guild: GuildSchema,
     guild_id: z.string(),
