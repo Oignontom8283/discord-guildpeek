@@ -3,8 +3,10 @@
 
 Get a public preview of a Discord server from its invite code, without authentication.
 
+You can notably retrieve (in real time) the **number of members**, the **number of members online**, the **name of the guild**, the **icon** of the guild, the **banner** of the guild (if there is one). Name, global name, avatar, banner of the inventor (if there is one). And the channel where the invite was created.
+
 [![npm version](https://img.shields.io/npm/v/discord-guildpeek.svg)](https://www.npmjs.com/package/discord-guildpeek)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 
 ## 📦 Installation
 
@@ -21,6 +23,7 @@ import { getStatus } from 'discord-guildpeek';
 
 getStatus('INVITE_ID').then(info => {
   console.log(info);
+  console.log(info.guild.members); // Total members in the server
 });
 ```
 
@@ -30,11 +33,11 @@ getStatus('INVITE_ID').then(info => {
 {
   "code": "INVITE_ID",
   "guild": {
-    "id" "SERVER_ID"
+    "id": "SERVER_ID",
     "name": "Server Name",
     "description": "Description...",
-    "member": 1234,
-    "online": 56,
+    "members": 1234,
+    "onlines": 56,
     "icon": "https://cdn.discordapp.com/icons/SERVER_ID/ICON_ID.png",
     "banner": "https://cdn.discordapp.com/banners/SERVER_ID/BANNER_ID.png",
     ...
@@ -54,6 +57,7 @@ getStatus('INVITE_ID').then(info => {
   "expiresAt": "2025-01-01T00:00:00.000Z",
   ...
 }
+1234
 ```
 
 ## 🧰 Features
