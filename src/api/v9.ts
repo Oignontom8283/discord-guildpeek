@@ -134,8 +134,8 @@ export interface DiscordInviteStatusV9 {
         id: string;
         name: string;
         description: string | null;
-        member: number;
-        online: number;
+        members: number;
+        onlines: number;
 
         icon: ImageGetterFunction;
         banner: ImageGetterFunction | null;
@@ -202,8 +202,8 @@ function convertInviteStatusV9(data: z.infer<typeof DiscordInviteSchemaV9>): Dis
 
             banner: data.guild.splash ? ImageGetter(RessourceType.SPLASHES, data.guild.id, data.guild.splash) : null,
 
-            member: data.profile.member_count,
-            online: data.profile.online_count,
+            members: data.profile.member_count,
+            onlines: data.profile.online_count,
             description: data.guild.description,
             features: data.guild.features,
             verificationLevel: data.guild.verification_level,
