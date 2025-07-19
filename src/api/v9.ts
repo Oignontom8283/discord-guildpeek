@@ -128,16 +128,51 @@ function ImageGetter(mediaType:RessourceType, userId:string, ressourceId:string)
  * Represents the status of a Discord invite in API version 9.
  */
 export interface DiscordInviteStatusV9 {
+
+    /**
+     * The unique code of the invite.
+     */
     code: string;
+
+    /**
+     * The expiration date of the invite, or null if it does not expire.
+     */
     expiresAt: Date | null;
+
+    /**
+     * Represents the guild information associated with the invite.
+     */
     guild: {
+
+        /** ID of the guild */
         id: string;
+
+        /** Name of the guild */
         name: string;
+
+        /** Description of the guild */
         description: string | null;
         members: number;
         onlines: number;
-
+        
+        /**
+         * Generates the URL for the guild icon.
+         * 
+         * @remarks **If the icon used is not compatible with the gif format, the server will return a JSON indicating `unknown resource`.**
+         * 
+         * @param args.size - (optional) The size of the icon to retrieve.
+         * @param args.extension - (optional) The file extension for the icon. Defaults to 'png'.
+         */
         icon: ImageGetterFunction;
+
+        /**
+         * Generates the URL for the guild banner.
+         * 
+         * @remarks **If the banner used is not compatible with the gif format, the server will return a JSON indicating `unknown resource`.**
+         * 
+         * @param args.size - (optional) The size of the banner to retrieve.
+         * @param args.extension - (optional) The file extension for the banner. Defaults to 'png'.
+         */
         banner: ImageGetterFunction | null;
 
         features: string[];
@@ -157,17 +192,48 @@ export interface DiscordInviteStatusV9 {
         traits: unknown[];
         visibility: number;
     },
+
+    /***
+     * Represents the channel information associated with the invite.
+     */
     channel: {
         id: string;
         type: number;
         name: string;
     },
-    inviter: {
-        id: string;
-        username: string;
-        globalName: string;
 
+    /**
+     * Represents the inviter information associated with the invite.
+     */
+    inviter: {
+
+        /** ID of the inviter */
+        id: string;
+
+        /** Username of the inviter */
+        username: string;
+
+        /** Global name of the inviter */
+        globalName: string; 
+
+        /**
+         * Generates the URL for the inviter's avatar.
+         * 
+         * @remarks **If the avatar used is not compatible with the gif format, the server will return a JSON indicating `unknown resource`.**
+         * 
+         * @param args.size - (optional) The size of the avatar to retrieve.
+         * @param args.extension - (optional) The file extension for the avatar. Defaults to 'png'.
+         */
         avatar: ImageGetterFunction;
+
+        /**
+         * Generates the URL for the inviter's banner.
+         * 
+         * @remarks **If the banner used is not compatible with the gif format, the server will return a JSON indicating `unknown resource`.**
+         * 
+         * @param args.size - (optional) The size of the banner to retrieve.
+         * @param args.extension - (optional) The file extension for the banner. Defaults to 'png'.
+         */
         banner: ImageGetterFunction | null;
 
         discriminator: string;
