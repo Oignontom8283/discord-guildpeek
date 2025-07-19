@@ -24,6 +24,9 @@ import { getStatus } from 'discord-guildpeek';
 getStatus('INVITE_ID').then(info => {
   console.log(info);
   console.log(info.guild.members); // Total members in the server
+  console.log(info.guild.onlines); // Online members in the server
+  console.log(info.guild.name); // Server name
+  console.log(info.guild.icon({ extension: 'png' })); // Guild icon URL with png format
 });
 ```
 
@@ -58,6 +61,9 @@ getStatus('INVITE_ID').then(info => {
   ...
 }
 1234
+56
+Server Name
+https://cdn.discordapp.com/icons/SERVER_ID/ICON_ID.png
 ```
 
 ## 🧰 Features
@@ -81,9 +87,9 @@ getStatus('INVITE_ID').then(info => {
 * Response validation via [Zod](https://github.com/colinhacks/zod)
 * Bundled with [Vite](https://vitejs.dev/) for browser builds
 
-## Github
+## GitHub
 
-Repository: [https://github.com/Oignontom8283/discord-guildpeek](https://github.com/Oignontom8283/discord-guildpeek)
+Repository : [https://github.com/Oignontom8283/discord-guildpeek](https://github.com/Oignontom8283/discord-guildpeek)
 
 ## 📜 License
 
