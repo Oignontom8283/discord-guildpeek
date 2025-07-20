@@ -143,14 +143,6 @@ type GifUrlOption = Omit<ImageUrlOptions, "extension"> & { backupExtension?: All
 type GifGetterFunction = (args: GifUrlOption, checkMethod: 'HEAD' | 'GET') => Promise<string>;
 
 /**
- * Defines a function type that generates a GIF image URL based on the provided options.
- *
- * @param args - The options used to construct the image URL.
- * @returns The generated GIF image URL as a string.
- */
-type ImageGifGetterFunction = (args: ImageUrlOptions) => string;
-
-/**
  * Generates an asynchronous function that retrieves the URL for a GIF version of a Discord resource.
  * The returned function checks if the GIF exists by making a request to the Discord CDN.
  * If the GIF exists, its URL is returned; otherwise, a fallback URL with a specified or default extension is provided.
@@ -177,7 +169,6 @@ function ImageGifgetter(mediatype:RessourceType, userId:string, ressourceId:stri
             : link + backUpExtension + size;   
     }
 }
-
 
 /**
  * Represents the status of a Discord invite in API version 9.
