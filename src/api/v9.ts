@@ -124,6 +124,61 @@ function ImageGetter(mediaType:RessourceType, userId:string, ressourceId:string)
     };
 }
 
+
+/**
+ * Options for generating a GIF image URL, based on {@link ImageUrlOptions} but without the `extension` property.
+ * Allows specifying an optional `backupExtension` to use as a fallback, which must be a valid {@link AllowedExtensionsValue}.
+ *
+ * @property {AllowedExtensionsValue} [backupExtension] - Optional fallback extension to use if the primary is unavailable.
+ */
+type GifUrlOption = Omit<ImageUrlOptions, "extension"> & { backupExtension?: AllowedExtensionsValue };
+
+/**
+ * Represents a function that retrieves a GIF image URL based on the provided options and HTTP method.
+ *
+ * @param args - The options used to determine the GIF image URL.
+ * @param checkMethod - The HTTP method to use when checking the GIF URL. Can be either 'HEAD' or 'GET'.
+ * @returns A promise that resolves to the GIF image URL as a string.
+ */
+type GifGetterFunction = (args: GifUrlOption, checkMethod: 'HEAD' | 'GET') => Promise<string>;
+
+/**
+ * Defines a function type that generates a GIF image URL based on the provided options.
+ *
+ * @param args - The options used to construct the image URL.
+ * @returns The generated GIF image URL as a string.
+ */
+type ImageGifGetterFunction = (args: ImageUrlOptions) => string;
+
+/**
+ * Generates an asynchronous function that retrieves the URL for a GIF version of a Discord resource.
+ * The returned function checks if the GIF exists by making a request to the Discord CDN.
+ * If the GIF exists, its URL is returned; otherwise, a fallback URL with a specified or default extension is provided.
+ *
+ * @param mediatype - The type of Discord resource (e.g., "avatars", "banners").
+ * @param userId - The ID of the user or entity owning the resource.
+ * @param ressourceId - The unique identifier for the specific resource.
+ * @returns An asynchronous function that, given arguments for size and backup extension, returns the appropriate resource URL.
+ */
+function ImageGifgetter(mediatype:RessourceType, userId:string, ressourceId:string): GifGetterFunction {
+    // This function generates a URL for a GIF version of a Discord resource, checking if the GIF exists before returning it.
+    return async (args, checkMethod = "HEAD") => {
+        const size = args.size ? `?size=${args.size}` : "";
+        const backUpExtension = args.backupExtension ? args.backupExtension : AllowedExtensions.PNG; // default to PNG if no backup extension is provided
+
+        const link = `https://cdn.discordapp.com/${mediatype}/${userId}/${ressourceId}.`;
+
+        // Check if the GIF version of the resource exists
+        const response = await fetch(link + AllowedExtensions.GIF, { method: checkMethod });
+
+        // If the response is OK, return the GIF link; otherwise, return the backup extension link
+        return response.ok 
+            ? link + AllowedExtensions.GIF + size
+            : link + backUpExtension + size;   
+    }
+}
+
+
 /**
  * Represents the status of a Discord invite in API version 9.
  */
