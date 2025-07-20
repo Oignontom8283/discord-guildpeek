@@ -87,13 +87,16 @@ https://cdn.discordapp.com/icons/SERVER_ID/ICON_ID.png
 * Response validation via [Zod](https://github.com/colinhacks/zod)
 * Bundled with [Vite](https://vitejs.dev/) for browser builds
 
-## GitHub
+## 📌 Links
+- [GitHub repository](https://github.com/Oignontom8283/discord-guildpeek)
 
-Repository : [https://github.com/Oignontom8283/discord-guildpeek](https://github.com/Oignontom8283/discord-guildpeek)
+- [Changelog](./CHANGELOG.txt)
+
+- [NPM package](https://www.npmjs.com/package/discord-guildpeek)
 
 ## 📜 License
 
-MIT — © 2025 [Oignontom8283](https://github.com/Oignontom8283)
+MIT © [Oignontom8283](https://github.com/Oignontom8283)
 
-> **This module is not affiliated with Discord Inc.**
+> ⚠️  **This module is not affiliated with Discord Inc.**
 
