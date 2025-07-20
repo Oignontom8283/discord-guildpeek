@@ -221,6 +221,28 @@ export interface DiscordInviteStatusV9 {
          */
         banner: ImageGetterFunction | null;
 
+        /**
+         * Generates the URL for the guild icon in GIF format.
+         * 
+         * @remarks **If the GIF format for the icon is not available, the returned format is args.backupExtension.**
+         * 
+         * @param args.size - (optional) The size of the icon to retrieve.
+         * @param args.backupExtension - (optional) The file extension to use as a fallback if the GIF is not available. Defaults to 'png'.
+         * @param checkMethod - (optional) The HTTP method to use when checking the GIF URL. Defaults to 'HEAD'.
+         */
+        iconGif: GifGetterFunction;
+
+        /**
+         * Generates the URL for the guild banner in GIF format.
+         * 
+         * @remarks **If the GIF format for the banner is not available, the returned format is args.backupExtension.**
+         * 
+         * @param args.size - (optional) The size of the banner to retrieve.
+         * @param args.backupExtension - (optional) The file extension to use as a fallback if the GIF is not available. Defaults to 'png'.
+         * @param checkMethod - (optional) The HTTP method to use when checking the GIF URL. Defaults to 'HEAD'.
+         */
+        bannerGif: GifGetterFunction | null;
+
         features: string[];
         verificationLevel: number;
         vanityUrl: string | null;
@@ -282,6 +304,28 @@ export interface DiscordInviteStatusV9 {
          */
         banner: ImageGetterFunction | null;
 
+        /**
+         * Generates the URL for the inviter's avatar in GIF format.
+         * 
+         * @remarks **If the GIF format for the avatar is not available, the returned format is args.backupExtension.**
+         * 
+         * @param args.size - (optional) The size of the avatar to retrieve.
+         * @param args.backupExtension - (optional) The file extension to use as a fallback if the GIF is not available. Defaults to 'png'.
+         * @param checkMethod - (optional) The HTTP method to use when checking the GIF URL. Defaults to 'HEAD'.
+         */
+        avatarGif: GifGetterFunction;
+
+        /**
+         * Generates the URL for the inviter's banner in GIF format.
+         * 
+         * @remarks **If the GIF format for the banner is not available, the returned format is args.backupExtension.**
+         * 
+         * @param args.size - (optional) The size of the banner to retrieve.
+         * @param args.backupExtension - (optional) The file extension to use as a fallback if the GIF is not available. Defaults to 'png'.
+         * @param checkMethod - (optional) The HTTP method to use when checking the GIF URL. Defaults to 'HEAD'.
+         */
+        bannerGif: GifGetterFunction | null;
+
         discriminator: string;
         flags: number;
         publicFlags: number;
@@ -311,8 +355,10 @@ function convertInviteStatusV9(data: z.infer<typeof DiscordInviteSchemaV9>): Dis
             name: data.guild.name,
 
             icon: ImageGetter(RessourceType.ICONS, data.guild.id, data.guild.icon),
-
             banner: data.guild.splash ? ImageGetter(RessourceType.SPLASHES, data.guild.id, data.guild.splash) : null,
+
+            iconGif: ImageGifgetter(RessourceType.ICONS, data.guild.id, data.guild.icon),
+            bannerGif: data.guild.banner ? ImageGifgetter(RessourceType.SPLASHES, data.guild.id, data.guild.banner) : null,
 
             members: data.profile.member_count,
             onlines: data.profile.online_count,
@@ -346,6 +392,9 @@ function convertInviteStatusV9(data: z.infer<typeof DiscordInviteSchemaV9>): Dis
 
             avatar: ImageGetter(RessourceType.AVATARS, data.inviter.id, data.inviter.avatar),
             banner: data.inviter.banner ? ImageGetter(RessourceType.BANNERS, data.inviter.id, data.inviter.banner) : null,
+
+            avatarGif: ImageGifgetter(RessourceType.AVATARS, data.inviter.id, data.inviter.avatar),
+            bannerGif: data.inviter.banner ? ImageGifgetter(RessourceType.BANNERS, data.inviter.id, data.inviter.banner) : null,
 
             discriminator: data.inviter.discriminator,
             flags: data.inviter.flags,
