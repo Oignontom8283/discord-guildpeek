@@ -66,6 +66,37 @@ Server Name
 https://cdn.discordapp.com/icons/SERVER_ID/ICON_ID.png
 ```
 
+## 🌐 Web package
+
+### UMD Build
+
+You can use the UMD package in the browser by including the script tag:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/discord-guildpeek/dist/browser/index.umd.js"></script>
+<script>
+  const { getInviteStatus } = window.DiscordGuildPeek;
+
+  getInviteStatus('INVITE_ID').then(info => {
+    console.log(info);
+  });
+</script>
+```
+
+### ES Build
+
+You can also use the ESM build in modern browsers:
+
+```html
+<script type="module">
+  import { getInviteStatus } from 'https://cdn.jsdelivr.net/npm/discord-guildpeek/dist/esm/index.js';
+
+  getInviteStatus('INVITE_ID').then(info => {
+    console.log(info);
+  });
+</script>
+```
+
 ## 🧰 Features
 
 * 🔍 `getInviteStatus(code: string)` — Fetches public metadata of a Discord server using an invite code (async).

@@ -1,3 +1,10 @@
 
 void - v1.1.4
 I forgot to make a changelog, sorry 😅
+
+v1.2.0
+- Add GIF URL generation for guild and inviter assets in DiscordInviteStatusV9
+- Updated vite.config.ts to include version in file names
+
+V1.2.1
+- Upgrade README.txt
