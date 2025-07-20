@@ -7,7 +7,7 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: "discordguildpeek",
-      fileName: (format) => `discord-guildpeek-${version}.${format}.js`,
+      fileName: (format) => `index.${format}.js`,
       formats: ['umd', 'es'], // UMD for browser compatibility, ES for modern module systems
     },
     outDir: 'dist/browser',
