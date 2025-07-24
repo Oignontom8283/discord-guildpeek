@@ -13,3 +13,6 @@ v1.2.2
 - add pnpm-lock.yaml to .gitignore
 - fix DiscordInviteStatusV9 type export in src/index.ts
 - fix objects names in src/api/v9.ts
+
+v1.2.3
+- fix package.json exports field
