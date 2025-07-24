@@ -1,6 +1,6 @@
 {
   "name": "discord-guildpeek",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Get a public preview of a Discord server from its invite code, without authentication.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
