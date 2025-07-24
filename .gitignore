@@ -1,5 +1,6 @@
 
 package-lock.json
+pnpm-lock.yaml
 
 test.ts
 test.js
