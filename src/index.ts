@@ -15,7 +15,7 @@ export * from './api/v9';
  *
  * @see DiscordInviteStatusV9
  */
-type DiscordInviteStatus = DiscordInviteStatusV9;
+export type DiscordInviteStatus = DiscordInviteStatusV9;
 
 /**
  * Retrieves the status of a Discord invite by its ID.
