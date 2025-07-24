@@ -55,7 +55,7 @@ export async function getInviteStatusV9(inviteId: string): Promise<DiscordInvite
  * 
  * @remarks The values correspond to the file formats accepted by Discord's API.
  */
-enum AllowedExtensions {
+export enum AllowedExtensionsV9 {
     WEBP = "webp",
     PNG = "png",
     JPG = "jpg",
@@ -64,15 +64,15 @@ enum AllowedExtensions {
 }
 
 /**
- * Represents a string literal type that matches any value of the {@link AllowedExtensions} type.
+ * Represents a string literal type that matches any value of the {@link AllowedExtensionsV9} type.
  * Useful for enforcing that only allowed file extensions are used as string values.
  */
-type AllowedExtensionsValue = `${AllowedExtensions}`;
+type AllowedExtensionsValueV9 = `${AllowedExtensionsV9}`;
 
 /**
  * Represents the types of resources available in the Discord API.
  */
-enum RessourceType {
+enum RessourceTypeV9 {
     AVATARS = 'avatars',
     BANNERS = 'banners',
     ICONS = 'icons',
@@ -85,7 +85,7 @@ enum RessourceType {
  * @property `size` - The size specified in the image URL.
  * @property `extension` - The extension to use for the image URL. Defaults to `png`.
  */
-type ImageUrlOptions = {
+type ImageUrlOptionsV9 = {
 
     /**
      * The size specified in the image URL
@@ -97,7 +97,7 @@ type ImageUrlOptions = {
      * 
      * @defaultValue `png`
      */
-    extension?: AllowedExtensionsValue;
+    extension?: AllowedExtensionsValueV9;
 }
 
 /**
@@ -106,7 +106,7 @@ type ImageUrlOptions = {
  * @param args - The options used to construct the image URL.
  * @returns The generated image URL as a string.
  */
-type ImageGetterFunction = (args: ImageUrlOptions) => string;
+type ImageGetterFunctionV9 = (args: ImageUrlOptionsV9) => string;
 
 /**
  * Returns a function that generates a Discord CDN image URL for a given media type, user ID, and resource ID.
@@ -116,22 +116,22 @@ type ImageGetterFunction = (args: ImageUrlOptions) => string;
  * @param ressourceId - The ID of the specific resource (e.g., avatar hash).
  * @returns A function that takes image options (size and extension) and returns the corresponding CDN URL.
  */
-function ImageGetter(mediaType:RessourceType, userId:string, ressourceId:string): ImageGetterFunction {
+function ImageGetter(mediaType:RessourceTypeV9, userId:string, ressourceId:string): ImageGetterFunctionV9 {
     return (args) => {
         const size = args.size ? `?size=${args.size}` : "";
-        const extension  = args.extension ? args.extension : AllowedExtensions.PNG; 
+        const extension  = args.extension ? args.extension : AllowedExtensionsV9.PNG; 
         return `https://cdn.discordapp.com/${mediaType}/${userId}/${ressourceId}.${extension}${size}`;
     };
 }
 
 
 /**
- * Options for generating a GIF image URL, based on {@link ImageUrlOptions} but without the `extension` property.
- * Allows specifying an optional `backupExtension` to use as a fallback, which must be a valid {@link AllowedExtensionsValue}.
+ * Options for generating a GIF image URL, based on {@link ImageUrlOptionsV9} but without the `extension` property.
+ * Allows specifying an optional `backupExtension` to use as a fallback, which must be a valid {@link AllowedExtensionsValueV9}.
  *
  * @property {AllowedExtensionsValue} [backupExtension] - Optional fallback extension to use if the primary is unavailable.
  */
-type GifUrlOption = Omit<ImageUrlOptions, "extension"> & { backupExtension?: AllowedExtensionsValue };
+type GifUrlOption = Omit<ImageUrlOptionsV9, "extension"> & { backupExtension?: AllowedExtensionsValueV9 };
 
 /**
  * Represents a function that retrieves a GIF image URL based on the provided options and HTTP method.
@@ -152,20 +152,20 @@ type GifGetterFunction = (args: GifUrlOption, checkMethod: 'HEAD' | 'GET') => Pr
  * @param ressourceId - The unique identifier for the specific resource.
  * @returns An asynchronous function that, given arguments for size and backup extension, returns the appropriate resource URL.
  */
-function ImageGifgetter(mediatype:RessourceType, userId:string, ressourceId:string): GifGetterFunction {
+function ImageGifgetter(mediatype:RessourceTypeV9, userId:string, ressourceId:string): GifGetterFunction {
     // This function generates a URL for a GIF version of a Discord resource, checking if the GIF exists before returning it.
     return async (args, checkMethod = "HEAD") => {
         const size = args.size ? `?size=${args.size}` : "";
-        const backUpExtension = args.backupExtension ? args.backupExtension : AllowedExtensions.PNG; // default to PNG if no backup extension is provided
+        const backUpExtension = args.backupExtension ? args.backupExtension : AllowedExtensionsV9.PNG; // default to PNG if no backup extension is provided
 
         const link = `https://cdn.discordapp.com/${mediatype}/${userId}/${ressourceId}.`;
 
         // Check if the GIF version of the resource exists
-        const response = await fetch(link + AllowedExtensions.GIF, { method: checkMethod });
+        const response = await fetch(link + AllowedExtensionsV9.GIF, { method: checkMethod });
 
         // If the response is OK, return the GIF link; otherwise, return the backup extension link
         return response.ok 
-            ? link + AllowedExtensions.GIF + size
+            ? link + AllowedExtensionsV9.GIF + size
             : link + backUpExtension + size;   
     }
 }
@@ -209,7 +209,7 @@ export interface DiscordInviteStatusV9 {
          * @param args.size - (optional) The size of the icon to retrieve.
          * @param args.extension - (optional) The file extension for the icon. Defaults to 'png'.
          */
-        icon: ImageGetterFunction;
+        icon: ImageGetterFunctionV9;
 
         /**
          * Generates the URL for the guild banner.
@@ -219,7 +219,7 @@ export interface DiscordInviteStatusV9 {
          * @param args.size - (optional) The size of the banner to retrieve.
          * @param args.extension - (optional) The file extension for the banner. Defaults to 'png'.
          */
-        banner: ImageGetterFunction | null;
+        banner: ImageGetterFunctionV9 | null;
 
         /**
          * Generates the URL for the guild icon in GIF format.
@@ -292,7 +292,7 @@ export interface DiscordInviteStatusV9 {
          * @param args.size - (optional) The size of the avatar to retrieve.
          * @param args.extension - (optional) The file extension for the avatar. Defaults to 'png'.
          */
-        avatar: ImageGetterFunction;
+        avatar: ImageGetterFunctionV9;
 
         /**
          * Generates the URL for the inviter's banner.
@@ -302,7 +302,7 @@ export interface DiscordInviteStatusV9 {
          * @param args.size - (optional) The size of the banner to retrieve.
          * @param args.extension - (optional) The file extension for the banner. Defaults to 'png'.
          */
-        banner: ImageGetterFunction | null;
+        banner: ImageGetterFunctionV9 | null;
 
         /**
          * Generates the URL for the inviter's avatar in GIF format.
@@ -354,11 +354,11 @@ function convertInviteStatusV9(data: z.infer<typeof DiscordInviteSchemaV9>): Dis
             id: data.guild.id,
             name: data.guild.name,
 
-            icon: ImageGetter(RessourceType.ICONS, data.guild.id, data.guild.icon),
-            banner: data.guild.splash ? ImageGetter(RessourceType.SPLASHES, data.guild.id, data.guild.splash) : null,
+            icon: ImageGetter(RessourceTypeV9.ICONS, data.guild.id, data.guild.icon),
+            banner: data.guild.splash ? ImageGetter(RessourceTypeV9.SPLASHES, data.guild.id, data.guild.splash) : null,
 
-            iconGif: ImageGifgetter(RessourceType.ICONS, data.guild.id, data.guild.icon),
-            bannerGif: data.guild.banner ? ImageGifgetter(RessourceType.SPLASHES, data.guild.id, data.guild.banner) : null,
+            iconGif: ImageGifgetter(RessourceTypeV9.ICONS, data.guild.id, data.guild.icon),
+            bannerGif: data.guild.banner ? ImageGifgetter(RessourceTypeV9.SPLASHES, data.guild.id, data.guild.banner) : null,
 
             members: data.profile.member_count,
             onlines: data.profile.online_count,
@@ -390,11 +390,11 @@ function convertInviteStatusV9(data: z.infer<typeof DiscordInviteSchemaV9>): Dis
             username: data.inviter.username,
             globalName: data.inviter.global_name || "",
 
-            avatar: ImageGetter(RessourceType.AVATARS, data.inviter.id, data.inviter.avatar),
-            banner: data.inviter.banner ? ImageGetter(RessourceType.BANNERS, data.inviter.id, data.inviter.banner) : null,
+            avatar: ImageGetter(RessourceTypeV9.AVATARS, data.inviter.id, data.inviter.avatar),
+            banner: data.inviter.banner ? ImageGetter(RessourceTypeV9.BANNERS, data.inviter.id, data.inviter.banner) : null,
 
-            avatarGif: ImageGifgetter(RessourceType.AVATARS, data.inviter.id, data.inviter.avatar),
-            bannerGif: data.inviter.banner ? ImageGifgetter(RessourceType.BANNERS, data.inviter.id, data.inviter.banner) : null,
+            avatarGif: ImageGifgetter(RessourceTypeV9.AVATARS, data.inviter.id, data.inviter.avatar),
+            bannerGif: data.inviter.banner ? ImageGifgetter(RessourceTypeV9.BANNERS, data.inviter.id, data.inviter.banner) : null,
 
             discriminator: data.inviter.discriminator,
             flags: data.inviter.flags,
